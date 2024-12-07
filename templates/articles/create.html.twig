@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create article{% endblock %}
+
+{% block body %}
+    <h1 class="fs-1 fw-bold">Create article</h1>
+
+    {{ form(form, {'attr': {'novalidate': 'novalidate'}}) }}
+{% endblock %}
