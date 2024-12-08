@@ -2,6 +2,7 @@
 
 ### Для запуска
 
-1. `php ./bin/console doctrine:database:create`
-2. `php ./bin/console doctrine:migrations:migrate`
-3. `php -S localhost:8000 -t ./public`
+1. `composer install`
+2. `symfony console doctrine:database:create`
+3. `symfony console doctrine:migrations:migrate`
+4. `symfony server:start`
