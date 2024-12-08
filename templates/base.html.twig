@@ -22,16 +22,35 @@
                 <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    <a href="{{ path('home') }}" class="nav-link {{ app.current_route == 'home' ? 'active' : '' }}">
-                        Home
-                    </a>
-                    <a href="{{ path('articles.index') }}" class="nav-link {{ app.current_route == 'articles.index' ? 'active' : '' }}">
-                        Articles
-                    </a>
-                    <a href="{{ path('articles.create') }}" class="nav-link {{ app.current_route == 'articles.create' ? 'active' : '' }}">
-                        Create article
-                    </a>
+
+                <div class="navbar-nav d-flex justify-content-between w-100">
+                    <div class="d-flex">
+                        <a href="{{ path('home') }}" class="nav-link {{ app.current_route == 'home' ? 'active' : '' }}">
+                            Home
+                        </a>
+                        {% if app.user %}
+                            <a href="{{ path('articles.index') }}" class="nav-link {{ app.current_route == 'articles.index' ? 'active' : '' }}">
+                                Articles
+                            </a>
+                            <a href="{{ path('articles.create') }}" class="nav-link {{ app.current_route == 'articles.create' ? 'active' : '' }}">
+                                Create article
+                            </a>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        {% if app.user %}
+                            <a href="{{ path('auth.logout') }}" class="nav-link">Logout</a>
+                        {% else %}
+                            <a href="{{ path('auth.login') }}" class="nav-link {{ app.current_route == 'auth.login' ? 'active' : '' }}">
+                                Login
+                            </a>
+
+                            <a href="{{ path('auth.register') }}" class="nav-link {{ app.current_route == 'auth.register' ? 'active' : '' }}">
+                                Register
+                            </a>
+                        {% endif %}
+                    </div>
                 </div>
                 </div>
             </div>
