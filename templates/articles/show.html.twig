@@ -13,20 +13,22 @@
                 {{ article.content }}
             </div>
 
-            <div class="card-footer d-flex gap-2">
-                <a href="{{ path('articles.edit', { id: article.id }) }}" class="btn btn-primary">
-                    Edit article
-                </a>
+            {% if app.user and app.user.email == article.user.email %}
+                <div class="card-footer d-flex gap-2">
+                    <a href="{{ path('articles.edit', { id: article.id }) }}" class="btn btn-primary">
+                        Edit article
+                    </a>
 
-                <form action="{{ path('articles.destroy', { id: article.id }) }}" method="POST">
-                    <input type="hidden" name="token" value="{{ csrf_token('delete-article') }}">
-                    <input type="hidden" name="_method" value="delete">
+                    <form action="{{ path('articles.destroy', { id: article.id }) }}" method="POST">
+                        <input type="hidden" name="token" value="{{ csrf_token('delete-article') }}">
+                        <input type="hidden" name="_method" value="delete">
 
-                    <button type="submit" class="btn btn-danger">
-                        Delete article
-                    </button>
-                </form>
-            </div>
+                        <button type="submit" class="btn btn-danger">
+                            Delete article
+                        </button>
+                    </form>
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

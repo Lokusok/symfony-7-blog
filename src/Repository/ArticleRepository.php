@@ -20,7 +20,7 @@ class ArticleRepository extends ServiceEntityRepository
     public function findAll(): array
     {
         return $this->createQueryBuilder('r')
-            ->orderBy('r.id DESC')
+            ->orderBy('r.id', 'DESC')
             ->getQuery()
             ->getResult();
     }

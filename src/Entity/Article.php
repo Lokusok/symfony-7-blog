@@ -57,12 +57,12 @@ class Article
         return $this;
     }
 
-    public function getUserId(): ?User
+    public function getUser(): ?User
     {
         return $this->user_id;
     }
 
-    public function setUserId(?User $user_id): static
+    public function setUser(?User $user_id): static
     {
         $this->user_id = $user_id;
 

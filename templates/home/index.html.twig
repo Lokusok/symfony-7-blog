@@ -3,5 +3,20 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
-<h1 class="fs-1 fw-bold">Home page</h1>
+<h1 class="fs-1 fw-bold mb-5">Home page</h1>
+
+    <div class="row gx-5">
+        {% for article in articles %}
+            <div class="col-12 col-md-6 col-xl-3">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ article.title }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ article.user.email }}</h6>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="{{ path('articles.show', { id: article.id }) }}" class="card-link">Read more</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

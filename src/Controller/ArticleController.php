@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\User;
 use App\Form\ArticleType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -48,7 +49,7 @@ class ArticleController extends AbstractController
 
             $article->setTitle($data->getTitle());
             $article->setContent($data->getContent());
-            $article->setUserId($this->getUser());
+            $article->setUser($this->getUser());
 
             $this->em->persist($article);
             $this->em->flush();
@@ -66,6 +67,7 @@ class ArticleController extends AbstractController
     public function edit(Request $request, Article $article): Response
     {
         $this->checkAuth();
+        $this->checkHaveArticle($this->getUser(), $article);
 
         $form = $this->createForm(ArticleType::class, $article);
 
@@ -103,6 +105,7 @@ class ArticleController extends AbstractController
     public function destroy(Request $request, Article $article)
     {
         $this->checkAuth();
+        $this->checkHaveArticle($this->getUser(), $article);
 
         $csrfToken = $request->getPayload()->get('token');
 
@@ -118,6 +121,13 @@ class ArticleController extends AbstractController
         $this->em->flush();
 
         return $this->redirectToRoute('articles.index');
+    }
+
+    public function checkHaveArticle(User $user, Article $article)
+    {
+        if ($user->getEmail() !== $article->getUser()->getEmail()) {
+            return $this->createAccessDeniedException('Access denied.');
+        }
     }
 
     public function checkAuth()
