@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class AuthControllerTest extends WebTestCase
+class RegisterTest extends WebTestCase
 {
     private KernelBrowser $client;
     private UserRepository $userRepository;
