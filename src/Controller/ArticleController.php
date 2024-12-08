@@ -49,6 +49,8 @@ class ArticleController extends AbstractController
 
             $article->setTitle($data->getTitle());
             $article->setContent($data->getContent());
+            $article->setCreatedAt(new \DateTimeImmutable());
+            $article->setUpdatedAt(new \DateTimeImmutable());
             $article->setUser($this->getUser());
 
             $this->em->persist($article);
@@ -78,6 +80,7 @@ class ArticleController extends AbstractController
 
             $article->setTitle($data->getTitle());
             $article->setContent($data->getContent());
+            $article->setUpdatedAt(new \DateTimeImmutable());
 
             $this->em->flush();
 
