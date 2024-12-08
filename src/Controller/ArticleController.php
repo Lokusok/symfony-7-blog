@@ -14,18 +14,18 @@ use Symfony\Component\Routing\Attribute\Route;
 class ArticleController extends AbstractController
 {
     public function __construct(
-        private EntityManagerInterface $em
+        private EntityManagerInterface $em,
     )
     {}
 
     #[Route('/articles', name: 'articles.index', methods: ['GET'])]
     public function index(): Response
     {
+        $this->checkAuth();
+
         $repository = $this->em->getRepository(Article::class);
 
-        $articles = $repository->findBy([], orderBy: [
-            'id' => 'DESC'
-        ]);
+        $articles = $repository->findAllByUser($this->getUser());
 
         return $this->render('articles/index.html.twig', [
             'articles' => $articles
@@ -35,6 +35,8 @@ class ArticleController extends AbstractController
     #[Route('/articles/create', name: 'articles.create', methods: ['GET', 'POST'])]
     public function create(Request $request): Response
     {
+        $this->checkAuth();
+
         $article = new Article();
 
         $form = $this->createForm(ArticleType::class, $article);
@@ -46,6 +48,7 @@ class ArticleController extends AbstractController
 
             $article->setTitle($data->getTitle());
             $article->setContent($data->getContent());
+            $article->setUserId($this->getUser());
 
             $this->em->persist($article);
             $this->em->flush();
@@ -62,6 +65,8 @@ class ArticleController extends AbstractController
     #[Route('/articles/{id}/edit', name: 'articles.edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Article $article): Response
     {
+        $this->checkAuth();
+
         $form = $this->createForm(ArticleType::class, $article);
 
         $form->handleRequest($request);
@@ -97,6 +102,8 @@ class ArticleController extends AbstractController
     #[Route('/articles/{id}', name: 'articles.destroy', methods: ['DELETE'])]
     public function destroy(Request $request, Article $article)
     {
+        $this->checkAuth();
+
         $csrfToken = $request->getPayload()->get('token');
 
         if (! $this->isCsrfTokenValid('delete-article', $csrfToken)) {
@@ -111,5 +118,12 @@ class ArticleController extends AbstractController
         $this->em->flush();
 
         return $this->redirectToRoute('articles.index');
+    }
+
+    public function checkAuth()
+    {
+        if (! $this->getUser()) {
+            return $this->redirectToRoute('auth.login');
+        }
     }
 }

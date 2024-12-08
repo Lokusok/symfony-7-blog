@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Article;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -20,6 +21,16 @@ class ArticleRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('r')
             ->orderBy('r.id DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllByUser(User $user): array
+    {
+        return $this->createQueryBuilder('r')
+            ->where('r.user_id = :user_id')
+            ->orderBy('r.id', 'DESC')
+            ->setParameter('user_id', $user->getId())
             ->getQuery()
             ->getResult();
     }

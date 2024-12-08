@@ -24,6 +24,10 @@ class Article
     #[Assert\NotBlank()]
     private ?string $content = null;
 
+    #[ORM\ManyToOne(inversedBy: 'articles')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user_id = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -49,6 +53,18 @@ class Article
     public function setContent(string $content): static
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    public function getUserId(): ?User
+    {
+        return $this->user_id;
+    }
+
+    public function setUserId(?User $user_id): static
+    {
+        $this->user_id = $user_id;
 
         return $this;
     }

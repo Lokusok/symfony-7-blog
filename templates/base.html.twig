@@ -30,7 +30,7 @@
                         </a>
                         {% if app.user %}
                             <a href="{{ path('articles.index') }}" class="nav-link {{ app.current_route == 'articles.index' ? 'active' : '' }}">
-                                Articles
+                                My articles
                             </a>
                             <a href="{{ path('articles.create') }}" class="nav-link {{ app.current_route == 'articles.create' ? 'active' : '' }}">
                                 Create article
