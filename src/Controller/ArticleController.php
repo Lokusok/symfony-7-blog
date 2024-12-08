@@ -6,6 +6,7 @@ use App\Entity\Article;
 use App\Form\ArticleType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -94,8 +95,16 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/articles/{id}', name: 'articles.destroy', methods: ['DELETE'])]
-    public function destroy(Article $article)
+    public function destroy(Request $request, Article $article)
     {
+        $csrfToken = $request->getPayload()->get('token');
+
+        if (! $this->isCsrfTokenValid('delete-article', $csrfToken)) {
+            return new JsonResponse([
+                'message' => 'Wrong credentials'
+            ], 403);
+        }
+
         $this->addFlash('success', "You successfully deleted article with id {$article->getId()}");
 
         $this->em->remove($article);
